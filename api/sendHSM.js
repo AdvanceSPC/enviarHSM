@@ -12,7 +12,7 @@ export default async function handler(req, res) {
       account: 'WHATSAPP_adv_wp@advance_F15D1506BB4072434E82550BBE4BE08D',
       account_name: 'WHATSAPP_adv_wp',
       batchId: 'TM1',
-      address: address || '593996683880',
+      address: '593996683880',
       message: {
         msgtype: 'template',
         text: `Hola, \nContinuamos con tu solicitud de Crédito.\nPara avanzar, necesitamos que nos entregues los siguientes documentos:\n\nCopia de cédula\n\n- Planilla de luz actual\n- Certificado de ingresos\n- Puedes enviarlos por correo o acercarte a nuestras oficinas.\n- Equipo de Créditos – Cooperativa Andalucía`,
