@@ -1,17 +1,12 @@
 import axios from 'axios';
-import { NextResponse } from 'next/server';
 
-export async function POST(req) {
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   try {
-    const body = await req.json();
-
-    const token = process.env.TOKEN;
-    if (!token) {
-      return NextResponse.json(
-        { status: 'error', message: 'Token no configurado' },
-        { status: 500 }
-      );
-    }
+    const { address } = req.body;
 
     const response = await axios.post(
       'https://bm.i6.inconcertcc.com/inconcert/api/batch_management/add_address_to_batch/',
@@ -21,7 +16,7 @@ export async function POST(req) {
         account: 'WHATSAPP_adv_wp@advance_F15D1506BB4072434E82550BBE4BE08D',
         account_name: 'WHATSAPP_adv_wp',
         batchId: 'TM1',
-        address: body.address || '593996683880',
+        address: address || '593996683880',
         message: {
           msgtype: 'template',
           text: `Hola, \nContinuamos con tu solicitud de Crédito.\nPara avanzar, necesitamos que nos entregues los siguientes documentos:\n\nCopia de cédula\n\n- Planilla de luz actual\n- Certificado de ingresos\n- Puedes enviarlos por correo o acercarte a nuestras oficinas.\n- Equipo de Créditos – Cooperativa Andalucía`,
@@ -38,17 +33,18 @@ export async function POST(req) {
       {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${process.env.TOKEN}`
         }
       }
     );
 
-    return NextResponse.json({ status: 'success', data: response.data });
+    res.status(200).json({ success: true, data: response.data });
 
   } catch (error) {
-    return NextResponse.json(
-      { status: 'error', message: error.message, details: error.response?.data },
-      { status: 500 }
-    );
+    res.status(500).json({
+      success: false,
+      message: error.message,
+      details: error.response?.data || null
+    });
   }
 }

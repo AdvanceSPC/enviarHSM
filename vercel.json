@@ -1,8 +1,6 @@
 {
   "version": 2,
-  "functions": {
-    "api/route.js": {
-      "runtime": "edge"
-    }
-  }
+  "routes": [
+    { "src": "/api/sendHSM", "dest": "/api/sendHSM.js" }
+  ]
 }
