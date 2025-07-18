@@ -4,7 +4,20 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { address } = req.body;
+    // ✅ Parsear el body manualmente por si viene como stream
+    const buffers = [];
+    for await (const chunk of req) {
+      buffers.push(chunk);
+    }
+    const rawBody = Buffer.concat(buffers).toString();
+    let parsedBody = {};
+    try {
+      parsedBody = JSON.parse(rawBody);
+    } catch (e) {
+      // Si no se puede parsear, se mantiene vacío
+    }
+
+    const finalAddress = parsedBody.address || '593996683880';
 
     const payload = {
       type: 'WHATSAPP',
@@ -12,7 +25,7 @@ export default async function handler(req, res) {
       account: 'WHATSAPP_adv_wp@advance_F15D1506BB4072434E82550BBE4BE08D',
       account_name: 'WHATSAPP_adv_wp',
       batchId: 'TM1',
-      address: '593996683880',
+      address: finalAddress,
       message: {
         msgtype: 'template',
         text: `Hola, \nContinuamos con tu solicitud de Crédito.\nPara avanzar, necesitamos que nos entregues los siguientes documentos:\n\nCopia de cédula\n\n- Planilla de luz actual\n- Certificado de ingresos\n- Puedes enviarlos por correo o acercarte a nuestras oficinas.\n- Equipo de Créditos – Cooperativa Andalucía`,
