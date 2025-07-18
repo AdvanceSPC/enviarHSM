@@ -1,5 +1,10 @@
 {
   "version": 2,
+  "functions": {
+    "api/sendHSM.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
   "routes": [
     { "src": "/api/sendHSM", "dest": "/api/sendHSM.js" }
   ]
